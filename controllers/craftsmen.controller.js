@@ -8,8 +8,10 @@ function post_craftsman_account(req, res) {
         res.json({});
     })
     .catch(err => {
-        // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
-        handle_delete_user_files(req.files);
+        if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...") {
+            // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
+            handle_delete_user_files(req.files);
+        }
         res.json(err);
     });
 }

@@ -11,10 +11,12 @@ function post_company_account(req, res) {
         res.json(company_info._id);
     })
     .catch(err => {
-        // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ..." || err === "عذراً ، توجد شركة تحمل نفس رقم السجل ، الرجاء إدخال رقم سجل آخر ...") {
+            // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
+            const { unlinkSync } = require("fs");
+            unlinkSync(req.files[0].path);
+            unlinkSync(req.files[1].path);
+        }
         res.json(err);
     });
 }

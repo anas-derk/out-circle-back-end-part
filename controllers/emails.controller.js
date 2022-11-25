@@ -33,7 +33,7 @@ function sendEmail(req, res) {
     // إرسال البيانات إلى الإيميل وفق الإعدادات السابقة
     transporter_obj().sendMail(mailConfigurations, function(error, info){
       if (error) {
-        // إذا نجح الإرسال نقوم بحذف الملفات المحملة إلى المخدم
+        // إذا لم ينجح الإرسال نقوم بحذف الملفات المحملة إلى المخدم
         unlinkSync(req.files[0].path);
         unlinkSync(req.files[1].path);
         // إرجاع الخطأ في حالة عدم نجاح عملية الإرسال

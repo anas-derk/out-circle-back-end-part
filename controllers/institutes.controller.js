@@ -8,9 +8,11 @@ function post_institute_account(req, res) {
     institutes_obj.create_institute_user_account(user_info).then(() => {
         res.json({});
     }).catch(err => {
-        // حذف الملف في حالة وُجد خطأ في إنشاء الحساب
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.file.path);
+        if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...") {
+            // حذف الملف في حالة وُجد خطأ في إنشاء الحساب
+            const { unlinkSync } = require("fs");
+            unlinkSync(req.file.path);
+        }
         res.json(err);
     });
 }
