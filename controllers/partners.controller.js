@@ -12,7 +12,7 @@ function post_partners(req, res) {
         return partner_info;
     });
     partners_obj.insert_partners_info(partners_info).then(() => {
-        res.json();
+        res.json({});
     }).catch(err => res.json(err));
 }
 
@@ -24,7 +24,7 @@ function get_partners_info(req, res) {
 
 function put_partner_info(req, res) {
     partners_obj.update_partner_info(req.params.partner_id, req.body).then(() => {
-        res.json();
+        res.json({});
     }).catch(err => res.json(err));
 }
 

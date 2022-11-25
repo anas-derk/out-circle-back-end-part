@@ -17,7 +17,7 @@ function put_user_password(req, res) {
         new_password = req.query.new_password,
         user_type = req.query.user_type;
     users_obj.update_user_password(user_type, user_id, old_password, new_password).then(() => {
-        res.json();
+        res.json({});
     }).catch(err => res.json(err));
 }
 
@@ -39,7 +39,7 @@ function post_forget_password(req, res) {
                     }
                 );
             })
-            .catch(err => console.log(err));
+            .catch(err => res.json(err));
         } else {
             res.json("عذراً، الحساب غير موجود ..");
         }
@@ -50,7 +50,7 @@ function post_forget_password(req, res) {
 function put_reset_user_password(req, res) {
     users_obj.reset_user_password(req.params.user_id, req.query.account_type, req.query.new_password)
     .then(() => {
-        res.json();
+        res.json({});
     })
     .catch(err => res.json(err));
 }

@@ -6,7 +6,7 @@ function post_institute_account(req, res) {
         file_src: req.file.path,
     };
     institutes_obj.create_institute_user_account(user_info).then(() => {
-        res.json();
+        res.json({});
     }).catch(err => res.json(err));
 }
 

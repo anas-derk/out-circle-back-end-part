@@ -2,7 +2,7 @@ const news_obj = require("../models/news.model");
 
 function post_news(req, res) {
     news_obj.add_news(req.body)
-    .then(() => res.json())
+    .then(() => res.json({}))
     .catch(err => res.json(err));
 }
 

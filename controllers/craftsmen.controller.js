@@ -7,7 +7,7 @@ function post_craftsman_account(req, res) {
         file_src2: req.files[1].path
     }
     craftsmen_obj.create_craftsman_user_account(user_info).then(() => {
-        res.json();
+        res.json({});
     })
     .catch(err => {
         // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب

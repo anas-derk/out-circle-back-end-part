@@ -43,7 +43,7 @@ function sendEmail(req, res) {
         // حذف الملفات المرفقة مع الإيميل من المخدم في حالة نجاح الإرسال
         unlinkSync(req.files[0].path);
         unlinkSync(req.files[1].path);
-        res.json()
+        res.json({})
       };
     });
 }

@@ -3,7 +3,7 @@ const notification_obj = require("../models/notifications.model");
 function post_notification(req, res) {
     const data = req.body;
     notification_obj.add_notification(data.email, data.content)
-    .then(() => res.json())
+    .then(() => res.json({}))
     .catch(err => res.json(err));
 }
 

@@ -16,7 +16,7 @@ function post_individual_account(req, res) {
         user_info = { ...Object.assign({}, req.body) };
     }
     individuals_obj.create_individual_user_account(user_info).then(() => {
-        res.json();
+        res.json({});
     })
     .catch(err => {
         let files = req.files;

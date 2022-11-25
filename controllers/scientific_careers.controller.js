@@ -6,7 +6,7 @@ function post_scientific_careers_account(req, res) {
         file_src: req.file.path,
     }
     scientific_careers_obj.create_scientific_careers_user_account(user_info).then(() => {
-        res.json();
+        res.json({});
     })
     .catch(err => {
         // حذف الملف في حالة وُجد خطأ في إنشاء الحساب
