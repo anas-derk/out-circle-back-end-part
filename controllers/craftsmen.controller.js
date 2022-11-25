@@ -1,19 +1,15 @@
 const craftsmen_obj = require("../models/craftsmen.model");
 
+const { handle_user_info, handle_delete_user_files } = require("../global/functions");
+
 function post_craftsman_account(req, res) {
-    const user_info = {
-        ...Object.assign({}, req.body),
-        file_src1: req.files[0].path,
-        file_src2: req.files[1].path
-    }
+    let user_info = handle_user_info(req.files, req.body);
     craftsmen_obj.create_craftsman_user_account(user_info).then(() => {
         res.json({});
     })
     .catch(err => {
         // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }

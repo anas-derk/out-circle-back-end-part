@@ -1,32 +1,15 @@
 const individuals_obj = require("../models/individuals.model");
 
+const { handle_user_info, handle_delete_user_files } = require("../global/functions");
+
 function post_individual_account(req, res) {
-    let files = req.files;
-    let user_info;
-    if (files.length > 0) {
-        let file_paths = [];
-        for (let i = 0; i < files.length; i++) {
-            file_paths.push(files[i].path);
-        }
-        user_info = {
-            ...Object.assign({}, req.body),
-            file_paths
-        };
-    } else {
-        user_info = { ...Object.assign({}, req.body) };
-    }
+    let user_info = handle_user_info(req.files, req.body);
     individuals_obj.create_individual_user_account(user_info).then(() => {
         res.json({});
     })
     .catch(err => {
-        let files = req.files;
-        if (files.length > 0) {
-            // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
-            const { unlinkSync } = require("fs");
-            for(let i = 0; i < files.length; i++) {
-                unlinkSync(files[i].path);
-            }
-        }
+        // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }

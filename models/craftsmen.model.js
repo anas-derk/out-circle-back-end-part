@@ -23,8 +23,7 @@ const craftsman_user_schema = mongoose.Schema({
     phone_number: Number,
     whatsapp_number: Number,
     email: String,
-    file_src1: String,
-    file_src2: String,
+    file_paths: [],
     account_type: {
         default: "craftsman",
         type: String
