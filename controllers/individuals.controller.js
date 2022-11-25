@@ -1,19 +1,32 @@
 const individuals_obj = require("../models/individuals.model");
 
 function post_individual_account(req, res) {
-    const user_info = {
-        ...Object.assign({}, req.body),
-        file_src1: req.files[0].path,
-        file_src2: req.files[1].path
-    };
+    let files = req.files;
+    let user_info;
+    if (files.length > 0) {
+        let file_paths = [];
+        for (let i = 0; i < files.length; i++) {
+            file_paths.push(files[i].path);
+        }
+        user_info = {
+            ...Object.assign({}, req.body),
+            file_paths
+        };
+    } else {
+        user_info = { ...Object.assign({}, req.body) };
+    }
     individuals_obj.create_individual_user_account(user_info).then(() => {
         res.json();
     })
     .catch(err => {
-        // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        let files = req.files;
+        if (files.length > 0) {
+            // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
+            const { unlinkSync } = require("fs");
+            for(let i = 0; i < files.length; i++) {
+                unlinkSync(files[i].path);
+            }
+        }
         res.json(err);
     });
 }

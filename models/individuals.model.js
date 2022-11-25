@@ -28,8 +28,7 @@ const individual_user_schema = mongoose.Schema({
     scientific_experience_details: String,
     language_skills: String,
     technical_skills: String,
-    file_src1: String,
-    file_src2: String,
+    file_paths: [],
     account_type: {
         default: "individual",
         type: String
