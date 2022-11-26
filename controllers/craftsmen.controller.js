@@ -23,23 +23,27 @@ function get_craftsman_user_info(req, res) {
 }
 
 function put_craftsman_info(req, res) {
-    let new_user_info = {
-        ...Object.assign({}, req.body),
-        file_src1: req.files[0].path,
-        file_src2: req.files[1].path
-    }
-    craftsmen_obj.update_craftsman_info(req.params.craftsman_id, new_user_info)
-    .then(new_user_info_obj => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.body.old_file_src1);
-        unlinkSync(req.body.old_file_src2);
+    let new_user_info = handle_user_info(req.files, req.body);
+    let craftsman_id = req.params.craftsman_id;
+    craftsmen_obj.update_craftsman_info(craftsman_id, new_user_info)
+    .then(result_list => {
+        let file_paths = result_list[0];
+        if (file_paths.length > 0) {
+            const { unlinkSync } = require("fs");
+            for(let i = 0; i < file_paths.length; i++) {
+                unlinkSync(file_paths[i]);
+            }
+        }
         // إرجاع بيانات المستخدم الجديدة مع إضافة المُعرف
-        res.json({_id: req.params.craftsman_id, ...new_user_info_obj});
+        res.json(
+            {
+                _id: craftsman_id,
+                ...result_list[1]
+            }
+        );
     })
     .catch(err => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }

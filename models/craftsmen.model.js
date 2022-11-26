@@ -131,6 +131,9 @@ function update_craftsman_info(user_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
+            return craftsman_user_model.findById(user_id);
+        })
+        .then((craftsman_user_info) => {
             let new_user_info_obj = {
                 city: new_user_info.city,
                 current_address: new_user_info.current_address,
@@ -141,13 +144,12 @@ function update_craftsman_info(user_id, new_user_info) {
                 phone_number: new_user_info.phone_number,
                 whatsapp_number: new_user_info.whatsapp_number,
                 email: new_user_info.email,
-                file_src1: new_user_info.file_src1,
-                file_src2: new_user_info.file_src2,
+                file_paths: new_user_info.file_paths,
             };
             craftsman_user_model.updateOne({ _id: user_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve(new_user_info_obj);
+                resolve([craftsman_user_info.file_paths, new_user_info_obj]);
             })
             .catch(err => {
                 mongoose.disconnect();
