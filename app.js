@@ -20,7 +20,7 @@ app.use(body_parser.json());
 
 const path = require("path");
 
-app.use(express.static(path.join(__dirname, "assets")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // import routers
 
