@@ -136,6 +136,9 @@ function update_individual_user_info(individual_user_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
+            return individual_user_model.findById(individual_user_id);
+        })
+        .then((individual_user_info) => {
             let new_user_info_obj = {
                 city: new_user_info.city,
                 current_address: new_user_info.current_address,
@@ -152,14 +155,13 @@ function update_individual_user_info(individual_user_id, new_user_info) {
                 scientific_experience_details: new_user_info.scientific_experience_details,
                 language_skills: new_user_info.language_skills,
                 technical_skills: new_user_info.technical_skills,
-                file_src1: new_user_info.file_src1,
-                file_src2: new_user_info.file_src2
+                file_paths: new_user_info.file_paths,
             };
             // Alter The Determinate Individual User Data In Database
             individual_user_model.updateOne({ _id: individual_user_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve(new_user_info_obj);
+                resolve([individual_user_info.file_paths, new_user_info_obj]);
             })
             .catch(err => {
                 mongoose.disconnect();

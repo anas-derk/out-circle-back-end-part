@@ -1,21 +1,17 @@
 const companies_obj = require("../models/companies.model");
 
+const { handle_user_info, handle_delete_user_files, handle_delete_files } = require("../global/functions");
+
 function post_company_account(req, res) {
-    const user_info = {
-        ...Object.assign({}, req.body),
-        file_src1: req.files[0].path,
-        file_src2: req.files[1].path
-    };
+    let user_info = handle_user_info(req.files, req.body);
     companies_obj.create_company_user_account(user_info).then(company_info => {
         // إعادة مُعرف الشركة من أجل الاستفادة منه في ربط الشريك بالشركة التي يُشارك بها
         res.json(company_info._id);
     })
     .catch(err => {
-        if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ..." || err === "عذراً ، توجد شركة تحمل نفس رقم السجل ، الرجاء إدخال رقم سجل آخر ...") {
+        if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...") {
             // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
-            const { unlinkSync } = require("fs");
-            unlinkSync(req.files[0].path);
-            unlinkSync(req.files[1].path);
+            handle_delete_user_files(req.files);
         }
         res.json(err);
     });
@@ -28,17 +24,17 @@ function get_company_info(req, res) {
 }
 
 function put_company_info(req, res) {
-    let new_user_info = {
-        ...Object.assign({}, req.body),
-        file_src1: req.files[0].path,
-        file_src2: req.files[1].path
-    }
-    companies_obj.update_company_info(req.params.company_id, new_user_info)
-    .then(new_user_info_obj => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.body.old_file_src1);
-        unlinkSync(req.body.old_file_src2);
-        res.json({_id: req.params.company_id, ...new_user_info_obj});
+    let new_user_info = handle_user_info(req.files, req.body);
+    let company_id = req.params.company_id;
+    companies_obj.update_company_info(company_id, new_user_info)
+    .then(result_list => {
+        handle_delete_files(result_list[0]);
+        res.json(
+            {
+                _id: company_id,
+                ...result_list[1]
+            }
+        );
     })
     .catch(err => {
         const { unlinkSync } = require("fs");

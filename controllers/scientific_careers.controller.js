@@ -1,10 +1,9 @@
 const scientific_careers_obj = require("../models/scientific_careers_obj.model");
 
+const { handle_user_info_with_one_file } = require("../global/functions");
+
 function post_scientific_careers_account(req, res) {
-    const user_info = {
-        ...Object.assign({}, req.body),
-        file_src: req.file.path,
-    }
+    let user_info = handle_user_info_with_one_file(req.file, req.body);
     scientific_careers_obj.create_scientific_careers_user_account(user_info).then(() => {
         res.json({});
     })
@@ -25,15 +24,18 @@ function get_scientific_career_info(req, res) {
 }
 
 function put_scientific_career_info(req, res) {
-    let user_info = {
-        ...Object.assign({}, req.body),
-        file_src: req.file.path,
-    }
-    scientific_careers_obj.update_scientific_career_info(req.params.scientific_career_id, user_info)
-    .then(new_user_info_obj => {
+    let new_user_info = handle_user_info_with_one_file(req.file, req.body);
+    let scientific_career_id = req.params.scientific_career_id;
+    scientific_careers_obj.update_scientific_career_info(scientific_career_id, new_user_info)
+    .then(result_list => {
         const { unlinkSync } = require("fs");
-        unlinkSync(req.body.old_file_src);
-        res.json({_id: req.params.scientific_career_id, ...new_user_info_obj});
+        unlinkSync(result_list[0]);
+        res.json(
+            {
+                _id: scientific_career_id,
+                ...result_list[1]
+            }
+        );
     })
     .catch(err => {
         const { unlinkSync } = require("fs");

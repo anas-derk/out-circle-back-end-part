@@ -1,10 +1,9 @@
 const institutes_obj = require("../models/institutes.model");
 
+const { handle_user_info_with_one_file } = require("../global/functions");
+
 function post_institute_account(req, res) {
-    const user_info = {
-        ...Object.assign({}, req.body),
-        file_src: req.file.path,
-    };
+    let user_info = handle_user_info_with_one_file(req.file, req.body);
     institutes_obj.create_institute_user_account(user_info).then(() => {
         res.json({});
     }).catch(err => {
@@ -27,15 +26,18 @@ function get_institute_info(req, res) {
 }
 
 function put_institute_info(req, res) {
-    let new_user_info = {
-        ...Object.assign({}, req.body),
-        file_src: req.file.path,
-    }
-    institutes_obj.update_institute_info(req.params.institute_id, new_user_info)
-    .then(new_user_info_obj => {
+    let new_user_info = handle_user_info_with_one_file(req.file, req.body);
+    let institute_id = req.params.institute_id;
+    institutes_obj.update_institute_info(institute_id, new_user_info)
+    .then(result_list => {
         const { unlinkSync } = require("fs");
-        unlinkSync(req.body.old_file_src);
-        res.json({_id: req.params.institute_id, ...new_user_info_obj});
+        unlinkSync(result_list[0]);
+        res.json(
+            {
+                _id: institute_id,
+                ...result_list[1]
+            }
+        );
     })
     .catch(err => {
         const { unlinkSync } = require("fs");

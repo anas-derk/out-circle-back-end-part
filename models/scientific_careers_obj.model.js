@@ -125,10 +125,13 @@ function get_scientific_career_info(scientific_career_id) {
     });
 }
 
-function update_scientific_career_info(user_id, new_user_info) {
+function update_scientific_career_info(scientific_career_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
+            return scientific_career_user_model.findById(scientific_career_id);
+        })
+        .then((scientific_career_user_info) => {
             let new_user_info_obj = {
                 city: new_user_info.city,
                 current_address: new_user_info.current_address,
@@ -138,10 +141,10 @@ function update_scientific_career_info(user_id, new_user_info) {
                 email: new_user_info.email,
                 file_src: new_user_info.file_src,
             };
-            scientific_career_user_model.updateOne({ _id: user_id }, new_user_info_obj)
+            scientific_career_user_model.updateOne({ _id: scientific_career_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve(new_user_info_obj);
+                resolve([scientific_career_user_info.file_src, new_user_info]);
             })
             .catch(err => {
                 mongoose.disconnect();

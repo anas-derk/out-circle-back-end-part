@@ -24,8 +24,7 @@ const company_user_schema = mongoose.Schema({
     landline_number: Number,
     fax_number: Number,
     number_of_partners: String,
-    file_src1: String,
-    file_src2: String,
+    file_paths: Array,
     // هذا المفتاح يُضاف تلقائياً إلى بيانات الجدول من أجل تسريع عملية تعديل البيانات
     account_type: {
         default: "company",
@@ -155,6 +154,9 @@ function update_company_info(user_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
+            return company_user_model.findById(user_id);
+        })
+        .then((company_user_info) => {
             // إنشاء كائن خاص بالبيانات الجديدة كي لا يتم حذف المعرّف عند التعديل
             let new_user_info_obj = {
                 company_name: new_user_info.company_name,
@@ -167,14 +169,13 @@ function update_company_info(user_id, new_user_info) {
                 landline_number: new_user_info.landline_number,
                 fax_number: new_user_info.fax_number,
                 number_of_partners: new_user_info.number_of_partners,
-                file_src1: new_user_info.file_src1,
-                file_src2: new_user_info.file_src2,
+                file_paths: new_user_info.file_paths,
             };
             company_user_model.updateOne({ _id: user_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
                 // إرجاع البيانات المعدلة من أجل حفظها في مكان ما للاستفادة منها لاحقاً
-                resolve(new_user_info_obj);
+                resolve([company_user_info.file_paths, new_user_info_obj]);
             })
             .catch(err => {
                 mongoose.disconnect();

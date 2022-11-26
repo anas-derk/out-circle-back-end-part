@@ -22,4 +22,31 @@ function handle_delete_user_files(files) {
     }
 }
 
-module.exports = { handle_user_info, handle_delete_user_files };
+function handle_delete_files(file_paths) {
+    if (file_paths.length > 0) {
+        const { unlinkSync } = require("fs");
+        for(let i = 0; i < file_paths.length; i++) {
+            unlinkSync(file_paths[i]);
+        }
+    }
+}
+
+function handle_user_info_with_one_file(file, body) {
+    let user_info;
+    if (file) {
+        user_info = {
+            ...Object.assign({}, body),
+            file_src: file.path,
+        }
+    } else {
+        user_info = { ...Object.assign({}, body) };
+    }
+    return user_info;
+}
+
+module.exports = {
+    handle_user_info,
+    handle_delete_user_files,
+    handle_delete_files,
+    handle_user_info_with_one_file
+};

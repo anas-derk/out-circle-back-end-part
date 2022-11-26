@@ -1,6 +1,6 @@
 const individuals_obj = require("../models/individuals.model");
 
-const { handle_user_info, handle_delete_user_files } = require("../global/functions");
+const { handle_user_info, handle_delete_user_files, handle_delete_files } = require("../global/functions");
 
 function post_individual_account(req, res) {
     let user_info = handle_user_info(req.files, req.body);
@@ -23,22 +23,21 @@ function get_individual_user_info(req, res) {
 }
 
 function put_individual_user_info(req, res) {
-    let new_user_info = {
-        ...Object.assign({}, req.body),
-        file_src1: req.files[0].path,
-        file_src2: req.files[1].path
-    }
-    individuals_obj.update_individual_user_info(req.params.individual_user_id, new_user_info)
-    .then(new_user_info_obj => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.body.old_file_src1);
-        unlinkSync(req.body.old_file_src2);
-        res.json({_id: req.params.individual_user_id, ...new_user_info_obj});
+    let new_user_info = handle_user_info(req.files, req.body);
+    let individual_user_id = req.params.individual_user_id;
+    individuals_obj.update_individual_user_info(individual_user_id, new_user_info)
+    .then(result_list => {
+        handle_delete_files(result_list[0]);
+        // إرجاع بيانات المستخدم الجديدة مع إضافة المُعرف
+        res.json(
+            {
+                _id: individual_user_id,
+                ...result_list[1]
+            }
+        );
     })
     .catch(err => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }

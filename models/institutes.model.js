@@ -131,10 +131,13 @@ function get_institute_info(institute_id) {
     });
 }
 
-function update_institute_info(user_id, new_user_info) {
+function update_institute_info(institute_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
+            return institute_user_model.findById(institute_id);
+        })
+        .then((institute_info) => {
             let new_user_info_obj = {
                 phone_number: new_user_info.phone_number,
                 whatsapp_number: new_user_info.whatsapp_number,
@@ -149,10 +152,10 @@ function update_institute_info(user_id, new_user_info) {
                 land_phone_extension: new_user_info.land_phone_extension,
                 file_src: new_user_info.file_src,
             };
-            institute_user_model.updateOne({ _id: user_id }, new_user_info_obj)
+            institute_user_model.updateOne({ _id: institute_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve(encrypted_password);
+                resolve([institute_info.file_src, new_user_info]);
             })
             .catch(err => {
                 mongoose.disconnect();

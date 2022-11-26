@@ -1,6 +1,6 @@
 const craftsmen_obj = require("../models/craftsmen.model");
 
-const { handle_user_info, handle_delete_user_files } = require("../global/functions");
+const { handle_user_info, handle_delete_user_files, handle_delete_files } = require("../global/functions");
 
 function post_craftsman_account(req, res) {
     let user_info = handle_user_info(req.files, req.body);
@@ -27,13 +27,7 @@ function put_craftsman_info(req, res) {
     let craftsman_id = req.params.craftsman_id;
     craftsmen_obj.update_craftsman_info(craftsman_id, new_user_info)
     .then(result_list => {
-        let file_paths = result_list[0];
-        if (file_paths.length > 0) {
-            const { unlinkSync } = require("fs");
-            for(let i = 0; i < file_paths.length; i++) {
-                unlinkSync(file_paths[i]);
-            }
-        }
+        handle_delete_files(result_list[0]);
         // إرجاع بيانات المستخدم الجديدة مع إضافة المُعرف
         res.json(
             {
