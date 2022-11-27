@@ -14,35 +14,49 @@ function transporter_obj() {
 
 const { unlinkSync } = require("fs");
 
+const { handle_delete_user_files } = require("../global/functions");
+
 function sendEmail(req, res) {
+    let data = req.body;
+    let text;
+    if (data.phone_number && !data.whatsapp_number) {
+      text = `- from user email: ${data.user_email},\nContents of the message:\n ${data.text}\n - my phone number is: ${data.phone_number}`;
+    }
+    else if (!data.phone_number && data.whatsapp_number) {
+      text = `- from user email: ${data.user_email},\nContents of the message:\n ${data.text}\n - my whatsapp number is: ${data.whatsapp_number}`;
+    }
+    else if (!data.phone_number && !data.whatsapp_number) {
+      text = `- from user email: ${data.user_email},\nContents of the message:\n ${data.text}`
+    }
+    else {
+      text = `- from user email: ${data.user_email},\nContents of the message:\n ${data.text}\n - my phone number is: ${data.phone_number}\n - my whatsapp number is: ${data.whatsapp_number}`;
+    }
+    let attachments = [];
+    let files = req.files;
+    for(let i = 0; i < files.length; i++) {
+      attachments.push({
+        path: files[i].path
+      });
+    }
     // إعداد الرسالة قبل إرسالها
     const mailConfigurations = {
-      from: req.query.user_email,
-      to: req.query.admin_email,
-      subject: req.query.subject,
-      text: req.query.text + "\n" + req.query.user_email,
-      attachments: [
-        {   
-          path: req.files[0].path
-        },
-        {   
-          path: req.files[1].path
-        },
-      ]
+      from: data.user_email,
+      to: data.admin_email,
+      subject: data.subject,
+      text,
+      attachments,
     };
     // إرسال البيانات إلى الإيميل وفق الإعدادات السابقة
     transporter_obj().sendMail(mailConfigurations, function(error, info){
       if (error) {
         // إذا لم ينجح الإرسال نقوم بحذف الملفات المحملة إلى المخدم
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        handle_delete_user_files(files)
         // إرجاع الخطأ في حالة عدم نجاح عملية الإرسال
-        res.json(err);
+        res.json(error);
       }
       else {
         // حذف الملفات المرفقة مع الإيميل من المخدم في حالة نجاح الإرسال
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        handle_delete_user_files(files);
         res.json({})
       };
     });
