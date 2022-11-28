@@ -20,7 +20,7 @@ function get_all_news(req, res) {
 
 function delete_news(req, res) {
     news_obj.delete_news(req.params.news_id)
-    .then(last_ten_news_list => res.json(last_ten_news_list))
+    .then(() => res.json({}))
     .catch(err => res.json(err));
 }
 

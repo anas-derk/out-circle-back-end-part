@@ -40,13 +40,13 @@ const users_router = require("./routes/users.router");
 
 const emails_router = require("./routes/emails.router");
 
-// const admin_router = require("./routes/admin.router");
+const admin_router = require("./routes/admin.router");
 
 // const ads_router = require("./routes/ads.router");
 
-// const news_router = require("./routes/news.router");
+const news_router = require("./routes/news.router");
 
-// const notifications_router = require("./routes/notifications.router");
+const notifications_router = require("./routes/notifications.router");
 
 app.use("/api/individuals", individuals_router);
 
@@ -64,13 +64,13 @@ app.use("/api/users", users_router);
 
 app.use("/api/email", emails_router);
 
-// app.use("/api/admin", admin_router);
+app.use("/api/admin", admin_router);
 
 // app.use("/api/ads", ads_router);
 
-// app.use("/api/news", news_router);
+app.use("/api/news", news_router);
 
-// app.use("/api/notifications", notifications_router);
+app.use("/api/notifications", notifications_router);
 
 // Allocated The Port
 
