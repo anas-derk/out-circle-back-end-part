@@ -14,7 +14,7 @@ const company_user_schema = mongoose.Schema({
     company_name: String,
     company_type: String,
     company_record_number: Number,
-    company_record_history: String,
+    company_record_history: Date,
     city: String,
     current_address: String,
     current_company_activity_details: String,
@@ -23,7 +23,7 @@ const company_user_schema = mongoose.Schema({
     work_start_date: Date,
     landline_number: Number,
     fax_number: Number,
-    number_of_partners: String,
+    number_of_partners: Number,
     file_paths: Array,
     // هذا المفتاح يُضاف تلقائياً إلى بيانات الجدول من أجل تسريع عملية تعديل البيانات
     account_type: {

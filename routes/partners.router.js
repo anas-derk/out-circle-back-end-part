@@ -2,7 +2,7 @@ const partners_router = require("express").Router();
 
 const partners_controller = require("../controllers/partners.controller");
 
-partners_router.post("/is-partner-user-account-exist", partners_controller.is_partner_user_account_exist);
+partners_router.get("/is-partner-user-account-exist", partners_controller.is_partner_user_account_exist);
 
 partners_router.post("/add-new-partner", partners_controller.post_partners);
 

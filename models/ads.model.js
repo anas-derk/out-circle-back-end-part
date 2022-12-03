@@ -9,7 +9,7 @@ const DB_URL = require("./DB_URL");
 // create Ads Schema For Ads Model
 
 const ads_schema = mongoose.Schema({
-    content: String,
+    text: String,
     ads_post_date: {
         type: Date,
         default: Date.now()
@@ -39,15 +39,15 @@ function add_ads(ads) {
     });
 }
 
-function get_last_ten_ads() {
+function get_all_ads() {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
-            return ads_model.find({}).sort({ ads_post_date: -1 }).limit(10);
+            return ads_model.find({}).sort({ ads_post_date: -1 });
         })
-        .then((last_ten_ads_list) => {
+        .then((ads_list) => {
             mongoose.disconnect();
-            resolve(last_ten_ads_list);
+            resolve(ads_list);
         })
         .catch(err => {
             mongoose.disconnect();
@@ -75,6 +75,6 @@ function delete_ads(ads_id) {
 
 module.exports = {
     add_ads,
-    get_last_ten_ads,
+    get_all_ads,
     delete_ads
 }
