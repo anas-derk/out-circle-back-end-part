@@ -56,11 +56,11 @@ function create_admin_user_account(userInfo) {
 
 // define admin login function
 
-function admin_login(userInfo) {
+function admin_login(email, password) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
             .then(() => {
-                return admin_user_model.findOne({ email: userInfo.email });
+                return admin_user_model.findOne({ email });
             })
             .then(user => {
                 if (!user) {
@@ -69,7 +69,7 @@ function admin_login(userInfo) {
                 } else {
                     // التأكد من كون كلمة السر المُدخلة مطابقة لكلمة السر المشفرة في قاعدة البيانات
                     // ملاحظة : بعد تشفير كلمة السر المدخلة
-                    bcrypt.compare(userInfo.password, user.password).then(passwordIsTrue => {
+                    bcrypt.compare(password, user.password).then(passwordIsTrue => {
                         switch (passwordIsTrue) {
                             case true: {
                                 // في حالة كانت الكلمتان متطابقتان نقوم بإرجاع بيانات الحساب
