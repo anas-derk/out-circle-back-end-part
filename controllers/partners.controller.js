@@ -7,7 +7,7 @@ function is_partner_user_account_exist(req, res) {
 }
 
 function post_partners(req, res) {
-    const partners_info = req.body.map((partner_info) => {
+    const partners_info = req.body.partners_info.map((partner_info) => {
         partner_info = {...partner_info, company_id: req.query.company_id};
         return partner_info;
     });
