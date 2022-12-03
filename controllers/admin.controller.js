@@ -7,7 +7,7 @@ function post_admin_user(req, res) {
 }
 
 function get_admin_login(req, res) {
-    admin_obj.admin_login(req.body)
+    admin_obj.admin_login(req.query.email, req.query.password)
     .then(() => res.json({}))
     .catch(err => res.json(err));
 }
