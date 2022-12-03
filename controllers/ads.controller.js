@@ -13,7 +13,6 @@ function get_all_ads(req, res) {
     ads_obj.get_all_ads()   
     .then(ads_list => res.json(ads_list))
     .catch(err => {
-        handle_delete_user_files(req.files);
         res.json(err);
     });
 }
