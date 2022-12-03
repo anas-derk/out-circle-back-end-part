@@ -42,7 +42,7 @@ const emails_router = require("./routes/emails.router");
 
 const admin_router = require("./routes/admin.router");
 
-// const ads_router = require("./routes/ads.router");
+const ads_router = require("./routes/ads.router");
 
 const news_router = require("./routes/news.router");
 
@@ -66,7 +66,7 @@ app.use("/api/email", emails_router);
 
 app.use("/api/admin", admin_router);
 
-// app.use("/api/ads", ads_router);
+app.use("/api/ads", ads_router);
 
 app.use("/api/news", news_router);
 
