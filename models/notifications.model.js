@@ -46,7 +46,7 @@ function get_all_notifications(email) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
-            return notification_model.find({ email });
+            return notification_model.find({ email }).sort({ notification_post_date: -1 });
         })
         .then((notifications_list) => {
             mongoose.disconnect();
