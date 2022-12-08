@@ -73,8 +73,26 @@ function delete_ads(ads_id) {
     });
 }
 
+function get_ads_details(ads_id) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return ads_model.findById(ads_id);
+        })
+        .then((ads_info) => {
+            mongoose.disconnect();
+            resolve(ads_info);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+
 module.exports = {
     add_ads,
     get_all_ads,
-    delete_ads
+    delete_ads,
+    get_ads_details
 }

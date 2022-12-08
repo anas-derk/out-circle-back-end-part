@@ -23,8 +23,17 @@ function delete_ads(req, res) {
     .catch(err => res.json(err));
 }
 
+function get_ads_info(req, res) {
+    ads_obj.get_ads_details(req.params.ads_id)
+    .then(ads_info => {
+        res.json(ads_info);
+    })
+    .catch(err => res.json(err));
+}
+
 module.exports = {
     post_ads,
     get_all_ads,
-    delete_ads
+    delete_ads,
+    get_ads_info
 };
