@@ -1,17 +1,16 @@
 const scientific_careers_obj = require("../models/scientific_careers_obj.model");
 
-const { handle_user_info_with_one_file } = require("../global/functions");
+const { handle_user_info, handle_delete_user_files, handle_delete_files } = require("../global/functions");
 
 function post_scientific_careers_account(req, res) {
-    let user_info = handle_user_info_with_one_file(req.file, req.body);
+    let user_info = handle_user_info(req.files, req.body);
     scientific_careers_obj.create_scientific_careers_user_account(user_info).then(() => {
         res.json({});
     })
     .catch(err => {
         if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...") {
-            // حذف الملف في حالة وُجد خطأ في إنشاء الحساب
-            const { unlinkSync } = require("fs");
-            unlinkSync(req.file.path);
+            // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
+            handle_delete_user_files(req.files);
         }
         res.json(err);
     });
@@ -24,12 +23,11 @@ function get_scientific_career_info(req, res) {
 }
 
 function put_scientific_career_info(req, res) {
-    let new_user_info = handle_user_info_with_one_file(req.file, req.body);
+    let new_user_info = handle_user_info(req.files, req.body);
     let scientific_career_id = req.params.scientific_career_id;
     scientific_careers_obj.update_scientific_career_info(scientific_career_id, new_user_info)
     .then(result_list => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(result_list[0]);
+        handle_delete_files(result_list[0]);
         res.json(
             {
                 _id: scientific_career_id,
@@ -38,8 +36,7 @@ function put_scientific_career_info(req, res) {
         );
     })
     .catch(err => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.file.path);
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }

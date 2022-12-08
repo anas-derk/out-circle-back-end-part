@@ -21,7 +21,7 @@ const scientific_career_user_schema = mongoose.Schema({
     phone_number: Number,
     whatsapp_number: Number,
     email: String,
-    file_src: String,
+    file_paths: Array,
     account_type: {
         default: "scientific_career",
         type: String
@@ -139,12 +139,12 @@ function update_scientific_career_info(scientific_career_id, new_user_info) {
                 phone_number: new_user_info.phone_number,
                 whatsapp_number: new_user_info.whatsapp_number,
                 email: new_user_info.email,
-                file_src: new_user_info.file_src,
+                file_paths: new_user_info.file_paths,
             };
             scientific_career_user_model.updateOne({ _id: scientific_career_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve([scientific_career_user_info.file_src, new_user_info]);
+                resolve([scientific_career_user_info.file_paths, new_user_info]);
             })
             .catch(err => {
                 mongoose.disconnect();
