@@ -8,7 +8,7 @@ function post_notification(req, res) {
 }
 
 function get_all_user_notifications(req, res) {
-    notification_obj.get_all_notifications(req.body.email)
+    notification_obj.get_all_notifications(req.query.email)
     .then(notifications_info => res.json(notifications_info))
     .catch(err => res.json(err));
 }
