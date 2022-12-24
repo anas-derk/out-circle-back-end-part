@@ -25,21 +25,21 @@ const partner_user_model = mongoose.model("partner", partner_user_schema);
 
 // define create new partner user account function
 
-function is_partner_user_account_exist(user_info) {
+function is_partner_user_account_exist(email) {
     // معرفة هل بيانات المشارك موجودة مسبقاً 
     // في حالة كانت موجودة نعيد true .
     // في حالة غير موجودة في أي جدول من جداول قاعدة البيانات نعيد false
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
-            return partner_user_model.findOne({ email: user_info.email });
+            return partner_user_model.findOne({ email });
         })
         .then((user) => {
             if (user) {
                 mongoose.disconnect();
                 resolve(true);
             } else {
-                return mongoose.models.individual.findOne({ email: user_info.email });
+                return mongoose.models.individual.findOne({ email });
             }
         })
         .then((user) => {
@@ -47,7 +47,7 @@ function is_partner_user_account_exist(user_info) {
                 mongoose.disconnect();
                 resolve(true);
             } else {
-                return mongoose.models.companie.findOne({ email: user_info.email });
+                return mongoose.models.companie.findOne({ email });
             }
         })
         .then((user) => {
@@ -55,7 +55,7 @@ function is_partner_user_account_exist(user_info) {
                 mongoose.disconnect();
                 resolve(true);
             } else {
-                return mongoose.models.craftsman.findOne({ email: user_info.email });
+                return mongoose.models.craftsman.findOne({ email });
             }
         })
         .then((user) => {
@@ -63,7 +63,7 @@ function is_partner_user_account_exist(user_info) {
                 mongoose.disconnect();
                 resolve(true);
             } else {
-                return mongoose.models.institute.findOne({ email: user_info.email });
+                return mongoose.models.institute.findOne({ email });
             }
         })
         .then((user) => {
@@ -71,7 +71,7 @@ function is_partner_user_account_exist(user_info) {
                 mongoose.disconnect();
                 resolve(true);
             } else {
-                return mongoose.models.scientific_career.findOne({ email: user_info.email });
+                return mongoose.models.scientific_career.findOne({ email });
             }
         })
         .then((user) => {

@@ -1,7 +1,7 @@
 const partners_obj = require("../models/partners.model");
 
 function is_partner_user_account_exist(req, res) {
-    partners_obj.is_partner_user_account_exist(req.body).then(result => {
+    partners_obj.is_partner_user_account_exist(req.query.email).then(result => {
         res.json(result);
     }).catch(err => res.json(err));
 }
