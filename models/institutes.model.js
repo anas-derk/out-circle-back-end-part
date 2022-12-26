@@ -27,7 +27,7 @@ const institute_user_schema = mongoose.Schema({
     landline_number: Number,
     fax_number: Number,
     land_phone_extension: Number,
-    file_src: String,
+    file_paths: Array,
     account_type: {
         default: "institute",
         type: String
@@ -150,12 +150,12 @@ function update_institute_info(institute_id, new_user_info) {
                 landline_number: new_user_info.landline_number,
                 fax_number: new_user_info.fax_number,
                 land_phone_extension: new_user_info.land_phone_extension,
-                file_src: new_user_info.file_src,
+                file_paths: new_user_info.file_paths,
             };
             institute_user_model.updateOne({ _id: institute_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve([institute_info.file_src, new_user_info]);
+                resolve([institute_info.file_paths, new_user_info]);
             })
             .catch(err => {
                 mongoose.disconnect();

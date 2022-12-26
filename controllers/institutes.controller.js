@@ -1,16 +1,15 @@
 const institutes_obj = require("../models/institutes.model");
 
-const { handle_user_info_with_one_file } = require("../global/functions");
+const { handle_user_info, handle_delete_user_files, handle_delete_files } = require("../global/functions");
 
 function post_institute_account(req, res) {
-    let user_info = handle_user_info_with_one_file(req.file, req.body);
+    let user_info = handle_user_info(req.files, req.body);
     institutes_obj.create_institute_user_account(user_info).then(() => {
         res.json({});
     }).catch(err => {
         if (err === "عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...") {
-            // حذف الملف في حالة وُجد خطأ في إنشاء الحساب
-            const { unlinkSync } = require("fs");
-            unlinkSync(req.file.path);
+            // حذف الملفات في حالة وُجد خطأ في إنشاء الحساب
+            handle_delete_user_files(req.files);
         }
         res.json(err);
     });
@@ -26,12 +25,11 @@ function get_institute_info(req, res) {
 }
 
 function put_institute_info(req, res) {
-    let new_user_info = handle_user_info_with_one_file(req.file, req.body);
+    let new_user_info = handle_user_info(req.files, req.body);
     let institute_id = req.params.institute_id;
     institutes_obj.update_institute_info(institute_id, new_user_info)
     .then(result_list => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(result_list[0]);
+        handle_delete_files(result_list[0]);
         res.json(
             {
                 _id: institute_id,
@@ -40,8 +38,7 @@ function put_institute_info(req, res) {
         );
     })
     .catch(err => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.file.path);
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }
