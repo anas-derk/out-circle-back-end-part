@@ -40,9 +40,7 @@ function put_company_info(req, res) {
         );
     })
     .catch(err => {
-        const { unlinkSync } = require("fs");
-        unlinkSync(req.files[0].path);
-        unlinkSync(req.files[1].path);
+        handle_delete_user_files(req.files);
         res.json(err);
     });
 }
