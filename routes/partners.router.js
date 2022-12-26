@@ -6,7 +6,7 @@ partners_router.get("/is-partner-user-account-exist", partners_controller.is_par
 
 partners_router.post("/add-partners", partners_controller.post_partners);
 
-partners_router.get("/partner-user-info/:company_id", partners_controller.get_partners_info);
+partners_router.get("/partners-info", partners_controller.get_partners_info);
 
 partners_router.put("/update-partner-info/:partner_id", partners_controller.put_partner_info);
 

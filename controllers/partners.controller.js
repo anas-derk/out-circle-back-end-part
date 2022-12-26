@@ -17,7 +17,7 @@ function post_partners(req, res) {
 }
 
 function get_partners_info(req, res) {
-    partners_obj.get_partners_info(req.params.company_id).then(partners_info => {
+    partners_obj.get_partners_info(req.query.company_id).then(partners_info => {
         res.json(partners_info);
     }).catch(err => res.json(err));
 }
