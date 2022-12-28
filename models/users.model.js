@@ -132,20 +132,20 @@ function update_user_password(user_type, user_id, old_password, new_password) {
                     .then(encrypted_password => {
                         // نبحث عن المستخدم المطلوب حسب نوع الحساب المدخل لتسريع عملية البحث ، ثمّ نستبدل كلمة السر القديمة بالكلمة الجديدة المدخلة
                         switch(user_type){
-                            case "individuals": {
+                            case "individual": {
                                 // Change User Password After Encrypting it
                                 return mongoose.models.individual.updateOne({ email: user.email }, { password: encrypted_password });
                             }
-                            case "companies": {
+                            case "company": {
                                 return mongoose.models.companie.updateOne({ email: user.email }, { password: encrypted_password });
                             }
-                            case "craftsmen": {
+                            case "craftsman": {
                                 return mongoose.models.craftsman.updateOne({ email: user.email }, { password: encrypted_password });
                             }
-                            case "institutes": {
+                            case "institute": {
                                 return mongoose.models.institute.updateOne({ email: user.email }, { password: encrypted_password });
                             }
-                            case "scientific_careers": {
+                            case "scientific_career": {
                                 return mongoose.models.scientific_career.updateOne({ email: user.email }, { password: encrypted_password });
                             }
                             default: {
