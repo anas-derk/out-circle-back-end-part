@@ -11,11 +11,11 @@ const DB_URL = require("./DB_URL");
 const partner_user_schema = mongoose.Schema({
     full_name: String,
     birthday: Date,
-    phone_number: Number,
-    whatsapp_number: Number,
-    land_phone_extension: Number,
+    phone_number: String,
+    whatsapp_number: String,
+    land_phone_extension: String,
     email: String,
-    participation_rate: Number,
+    participation_rate: String,
     company_id: String,
 });
 
