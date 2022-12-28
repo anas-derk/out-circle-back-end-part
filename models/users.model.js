@@ -88,19 +88,19 @@ function update_user_password(user_type, user_id, old_password, new_password) {
             .then(() => {
                 // البحث عن الحساب إن كان موجوداً أولاً أم لا حسب نوع المستخدم من أجل تسريع عملية البحث
                 switch(user_type){
-                    case "individuals": {
+                    case "individual": {
                         return mongoose.models.individual.findById(user_id);
                     }
-                    case "companies": {
+                    case "company": {
                         return mongoose.models.companie.findById(user_id);
                     }
-                    case "craftsmen": {
+                    case "craftsman": {
                         return mongoose.models.craftsman.findById(user_id);
                     }
-                    case "institutes": {
+                    case "institute": {
                         return mongoose.models.institute.findById(user_id);
                     }
-                    case "scientific_careers": {
+                    case "scientific_career": {
                         return mongoose.models.scientific_career.findById(user_id);
                     }
                     default: {
