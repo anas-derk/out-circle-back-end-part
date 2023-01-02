@@ -131,6 +131,23 @@ function get_institute_info(institute_id) {
     });
 }
 
+function get_all_institutes_info() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return institute_user_model.find();
+        })
+        .then((institutes_info_List) => {
+            mongoose.disconnect();
+            resolve(institutes_info_List);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
 function update_institute_info(institute_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
@@ -168,5 +185,6 @@ function update_institute_info(institute_id, new_user_info) {
 module.exports = {
     create_institute_user_account,
     get_institute_info,
-    update_institute_info
+    update_institute_info,
+    get_all_institutes_info
 };

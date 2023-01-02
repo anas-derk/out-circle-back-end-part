@@ -8,6 +8,8 @@ individuals_router.post("/add-new-user", upload.any(), individuals_controller.po
 
 individuals_router.get("/individual-user-info/:individual_user_id", individuals_controller.get_individual_user_info);
 
+individuals_router.get("/all-individuals-users-info", individuals_controller.get_all_individuals_users_info);
+
 individuals_router.put("/update-individual-user-info/:individual_user_id", upload.any(), individuals_controller.put_individual_user_info);
 
 module.exports = individuals_router;

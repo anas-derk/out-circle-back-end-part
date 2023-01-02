@@ -132,6 +132,23 @@ function get_individual_user_info(individual_user_id) {
     });
 }
 
+function get_all_individuals_users_info() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return individual_user_model.find();
+        })
+        .then((individuals_users_info_List) => {
+            mongoose.disconnect();
+            resolve(individuals_users_info_List);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
 function update_individual_user_info(individual_user_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
@@ -174,5 +191,6 @@ function update_individual_user_info(individual_user_id, new_user_info) {
 module.exports = {
     create_individual_user_account,
     get_individual_user_info,
-    update_individual_user_info
+    update_individual_user_info,
+    get_all_individuals_users_info
 };

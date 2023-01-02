@@ -22,6 +22,12 @@ function get_scientific_career_info(req, res) {
     }).catch(err => res.json(err));
 }
 
+function get_all_scientific_careers_users_info(req, res) {
+    scientific_careers_obj.get_all_scientific_careers_users_info().then(scientific_careers_users_info_List => {
+        res.json(scientific_careers_users_info_List);
+    }).catch(err => res.json(err));
+}
+
 function put_scientific_career_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let scientific_career_id = req.params.scientific_career_id;
@@ -44,5 +50,6 @@ function put_scientific_career_info(req, res) {
 module.exports = {
     post_scientific_careers_account,
     get_scientific_career_info,
-    put_scientific_career_info
+    put_scientific_career_info,
+    get_all_scientific_careers_users_info
 };

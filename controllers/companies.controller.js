@@ -26,6 +26,12 @@ function get_company_info(req, res) {
     }).catch(err => res.json(err));
 }
 
+function get_all_companies(req, res) {
+    companies_obj.get_all_companies().then(companiesList => {
+        res.json(companiesList);
+    }).catch(err => res.json(err));
+}
+
 function put_company_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let company_id = req.params.company_id;
@@ -48,5 +54,6 @@ function put_company_info(req, res) {
 module.exports = {
     post_company_account,
     get_company_info,
-    put_company_info
+    put_company_info,
+    get_all_companies
 };

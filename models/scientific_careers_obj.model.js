@@ -125,6 +125,23 @@ function get_scientific_career_info(scientific_career_id) {
     });
 }
 
+function get_all_scientific_careers_users_info() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return scientific_career_user_model.find();
+        })
+        .then((scientific_careers_users_info_List) => {
+            mongoose.disconnect();
+            resolve(scientific_careers_users_info_List);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
 function update_scientific_career_info(scientific_career_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
@@ -157,5 +174,6 @@ function update_scientific_career_info(scientific_career_id, new_user_info) {
 module.exports = {
     create_scientific_careers_user_account,
     get_scientific_career_info,
-    update_scientific_career_info
+    update_scientific_career_info,
+    get_all_scientific_careers_users_info
 };

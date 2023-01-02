@@ -24,6 +24,12 @@ function get_institute_info(req, res) {
     });
 }
 
+function get_all_institutes_info(req, res) {
+    institutes_obj.get_all_institutes_info().then(institutes_info_List => {
+        res.json(institutes_info_List);
+    }).catch(err => res.json(err));
+}
+
 function put_institute_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let institute_id = req.params.institute_id;
@@ -46,5 +52,6 @@ function put_institute_info(req, res) {
 module.exports = {
     post_institute_account,
     get_institute_info,
-    put_institute_info
+    put_institute_info,
+    get_all_institutes_info
 };

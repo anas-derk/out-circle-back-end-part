@@ -150,6 +150,23 @@ function get_company_info(company_id) {
     });
 }
 
+function get_all_companies() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return company_user_model.find();
+        })
+        .then((compainesList) => {
+            mongoose.disconnect();
+            resolve(compainesList);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
 function update_company_info(user_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
@@ -188,5 +205,6 @@ function update_company_info(user_id, new_user_info) {
 module.exports = {
     create_company_user_account,
     get_company_info,
-    update_company_info
+    update_company_info,
+    get_all_companies,
 };

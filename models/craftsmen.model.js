@@ -127,6 +127,23 @@ function get_craftsman_user_info(craftsman_user_id) {
     });
 }
 
+function get_all_craftsmen_users_info() {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return craftsman_user_model.find();
+        })
+        .then((craftsmen_users_info_List) => {
+            mongoose.disconnect();
+            resolve(craftsmen_users_info_List);
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
 function update_craftsman_info(user_id, new_user_info) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
@@ -162,5 +179,6 @@ function update_craftsman_info(user_id, new_user_info) {
 module.exports = {
     create_craftsman_user_account,
     get_craftsman_user_info,
-    update_craftsman_info
+    update_craftsman_info,
+    get_all_craftsmen_users_info
 };

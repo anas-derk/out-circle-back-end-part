@@ -22,6 +22,12 @@ function get_individual_user_info(req, res) {
     }).catch(err => res.json(err));
 }
 
+function get_all_individuals_users_info(req, res) {
+    individuals_obj.get_all_individuals_users_info().then(individuals_users_info_List => {
+        res.json(individuals_users_info_List);
+    }).catch(err => res.json(err));
+}
+
 function put_individual_user_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let individual_user_id = req.params.individual_user_id;
@@ -45,5 +51,6 @@ function put_individual_user_info(req, res) {
 module.exports = {
     post_individual_account,
     get_individual_user_info,
-    put_individual_user_info
+    put_individual_user_info,
+    get_all_individuals_users_info
 };
