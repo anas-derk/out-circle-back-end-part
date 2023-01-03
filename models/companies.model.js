@@ -29,6 +29,10 @@ const company_user_schema = mongoose.Schema({
     account_type: {
         default: "company",
         type: String
+    },
+    register_date: {
+        type: Date,
+        default: Date.now()
     }
 });
 

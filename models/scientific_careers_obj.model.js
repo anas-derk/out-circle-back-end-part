@@ -25,6 +25,10 @@ const scientific_career_user_schema = mongoose.Schema({
     account_type: {
         default: "scientific_career",
         type: String
+    },
+    register_date: {
+        type: Date,
+        default: Date.now()
     }
 });
 

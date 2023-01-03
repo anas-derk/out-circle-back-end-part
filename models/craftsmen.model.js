@@ -27,6 +27,10 @@ const craftsman_user_schema = mongoose.Schema({
     account_type: {
         default: "craftsman",
         type: String
+    },
+    register_date: {
+        type: Date,
+        default: Date.now()
     }
 });
 
@@ -157,7 +161,7 @@ function update_craftsman_info(user_id, new_user_info) {
                 scientific_certificate: new_user_info.scientific_certificate,
                 craftsmanship: new_user_info.craftsmanship,
                 work_address: new_user_info.work_address,
-                landline_number: new_user_info.landline_number,
+                mobile_number: new_user_info.mobile_number,
                 phone_number: new_user_info.phone_number,
                 whatsapp_number: new_user_info.whatsapp_number,
                 email: new_user_info.email,

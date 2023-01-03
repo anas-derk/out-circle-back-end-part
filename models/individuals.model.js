@@ -32,6 +32,10 @@ const individual_user_schema = mongoose.Schema({
     account_type: {
         default: "individual",
         type: String
+    },
+    register_date: {
+        type: Date,
+        default: Date.now()
     }
 });
 

@@ -31,6 +31,10 @@ const institute_user_schema = mongoose.Schema({
     account_type: {
         default: "institute",
         type: String
+    },
+    register_date: {
+        type: Date,
+        default: Date.now()
     }
 });
 
