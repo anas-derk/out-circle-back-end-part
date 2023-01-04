@@ -171,12 +171,13 @@ function update_institute_info(institute_id, new_user_info) {
                 landline_number: new_user_info.landline_number,
                 fax_number: new_user_info.fax_number,
                 land_phone_extension: new_user_info.land_phone_extension,
-                file_paths: new_user_info.file_paths,
+                file_paths: new_user_info.file_paths ?
+                    [...institute_info.file_paths, ...new_user_info.file_paths] : institute_info.file_paths,
             };
             institute_user_model.updateOne({ _id: institute_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve([institute_info.file_paths, new_user_info]);
+                resolve(new_user_info_obj);
             })
             .catch(err => {
                 mongoose.disconnect();

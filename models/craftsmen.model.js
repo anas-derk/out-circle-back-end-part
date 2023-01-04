@@ -165,12 +165,13 @@ function update_craftsman_info(user_id, new_user_info) {
                 phone_number: new_user_info.phone_number,
                 whatsapp_number: new_user_info.whatsapp_number,
                 email: new_user_info.email,
-                file_paths: new_user_info.file_paths,
+                file_paths: new_user_info.file_paths ?
+                    [...craftsman_user_info.file_paths, ...new_user_info.file_paths] : craftsman_user_info.file_paths,
             };
             craftsman_user_model.updateOne({ _id: user_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve([craftsman_user_info.file_paths, new_user_info_obj]);
+                resolve(new_user_info_obj);
             })
             .catch(err => {
                 mongoose.disconnect();

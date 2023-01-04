@@ -176,13 +176,14 @@ function update_individual_user_info(individual_user_id, new_user_info) {
                 scientific_experience_details: new_user_info.scientific_experience_details,
                 language_skills: new_user_info.language_skills,
                 technical_skills: new_user_info.technical_skills,
-                file_paths: new_user_info.file_paths,
+                file_paths: new_user_info.file_paths ?
+                    [...individual_user_info.file_paths, ...new_user_info.file_paths] : individual_user_info.file_paths,
             };
             // Alter The Determinate Individual User Data In Database
             individual_user_model.updateOne({ _id: individual_user_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve([individual_user_info.file_paths, new_user_info_obj]);
+                resolve(new_user_info_obj);
             })
             .catch(err => {
                 mongoose.disconnect();

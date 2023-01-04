@@ -160,12 +160,13 @@ function update_scientific_career_info(scientific_career_id, new_user_info) {
                 phone_number: new_user_info.phone_number,
                 whatsapp_number: new_user_info.whatsapp_number,
                 email: new_user_info.email,
-                file_paths: new_user_info.file_paths,
+                file_paths: new_user_info.file_paths ?
+                    [...scientific_career_user_info.file_paths, ...new_user_info.file_paths] : scientific_career_user_info.file_paths,
             };
             scientific_career_user_model.updateOne({ _id: scientific_career_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
-                resolve([scientific_career_user_info.file_paths, new_user_info]);
+                resolve(new_user_info_obj);
             })
             .catch(err => {
                 mongoose.disconnect();

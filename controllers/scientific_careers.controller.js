@@ -32,12 +32,11 @@ function put_scientific_career_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let scientific_career_id = req.params.scientific_career_id;
     scientific_careers_obj.update_scientific_career_info(scientific_career_id, new_user_info)
-    .then(result_list => {
-        handle_delete_files(result_list[0]);
+    .then(new_user_info_obj => {
         res.json(
             {
                 _id: scientific_career_id,
-                ...result_list[1]
+                ...new_user_info_obj
             }
         );
     })

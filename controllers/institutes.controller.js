@@ -34,12 +34,11 @@ function put_institute_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let institute_id = req.params.institute_id;
     institutes_obj.update_institute_info(institute_id, new_user_info)
-    .then(result_list => {
-        handle_delete_files(result_list[0]);
+    .then(new_user_info_obj => {
         res.json(
             {
                 _id: institute_id,
-                ...result_list[1]
+                ...new_user_info_obj
             }
         );
     })

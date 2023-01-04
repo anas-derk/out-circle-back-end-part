@@ -36,12 +36,11 @@ function put_company_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let company_id = req.params.company_id;
     companies_obj.update_company_info(company_id, new_user_info)
-    .then(result_list => {
-        handle_delete_files(result_list[0]);
+    .then(new_user_info_obj => {
         res.json(
             {
                 _id: company_id,
-                ...result_list[1]
+                ...new_user_info_obj
             }
         );
     })

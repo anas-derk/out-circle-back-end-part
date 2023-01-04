@@ -1,6 +1,6 @@
 const individuals_obj = require("../models/individuals.model");
 
-const { handle_user_info, handle_delete_user_files, handle_delete_files } = require("../global/functions");
+const { handle_user_info, handle_delete_user_files } = require("../global/functions");
 
 function post_individual_account(req, res) {
     let user_info = handle_user_info(req.files, req.body);
@@ -32,13 +32,12 @@ function put_individual_user_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let individual_user_id = req.params.individual_user_id;
     individuals_obj.update_individual_user_info(individual_user_id, new_user_info)
-    .then(result_list => {
-        handle_delete_files(result_list[0]);
+    .then(new_user_info_obj => {
         // إرجاع بيانات المستخدم الجديدة مع إضافة المُعرف
         res.json(
             {
                 _id: individual_user_id,
-                ...result_list[1]
+                ...new_user_info_obj
             }
         );
     })

@@ -32,13 +32,12 @@ function put_craftsman_info(req, res) {
     let new_user_info = handle_user_info(req.files, req.body);
     let craftsman_id = req.params.craftsman_id;
     craftsmen_obj.update_craftsman_info(craftsman_id, new_user_info)
-    .then(result_list => {
-        handle_delete_files(result_list[0]);
+    .then(new_user_info_obj => {
         // إرجاع بيانات المستخدم الجديدة مع إضافة المُعرف
         res.json(
             {
                 _id: craftsman_id,
-                ...result_list[1]
+                ...new_user_info_obj
             }
         );
     })

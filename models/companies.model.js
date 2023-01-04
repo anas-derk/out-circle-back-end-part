@@ -190,13 +190,14 @@ function update_company_info(user_id, new_user_info) {
                 landline_number: new_user_info.landline_number,
                 fax_number: new_user_info.fax_number,
                 number_of_partners: new_user_info.number_of_partners,
-                file_paths: new_user_info.file_paths,
+                file_paths: new_user_info.file_paths ?
+                    [...company_user_info.file_paths, ...new_user_info.file_paths] : company_user_info.file_paths,
             };
             company_user_model.updateOne({ _id: user_id }, new_user_info_obj)
             .then(() => {
                 mongoose.disconnect();
                 // إرجاع البيانات المعدلة من أجل حفظها في مكان ما للاستفادة منها لاحقاً
-                resolve([company_user_info.file_paths, new_user_info_obj]);
+                resolve(new_user_info_obj);
             })
             .catch(err => {
                 mongoose.disconnect();
