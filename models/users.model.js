@@ -221,6 +221,14 @@ function is_user_account_exist(email) {
                 mongoose.disconnect();
                 resolve(user);
             } else {
+                return mongoose.models.admin.findOne({ email });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                resolve(user);
+            } else {
                 mongoose.disconnect();
                 resolve(false);
             }
@@ -259,6 +267,9 @@ function reset_user_password(user_id, account_type, new_password) {
                 }
                 case "scientific_career": {
                     return mongoose.models.scientific_career.updateOne({ _id: user_id }, { password: encrypted_password });
+                }
+                case "admin": {
+                    return mongoose.models.admin.updateOne({ _id: user_id }, { password: encrypted_password });
                 }
                 default: {
                     mongoose.disconnect();

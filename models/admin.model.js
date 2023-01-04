@@ -11,6 +11,10 @@ const DB_URL = require("./DB_URL");
 const admin_user_schema = mongoose.Schema({
     email: String,
     password: String,
+    account_type: {
+        default: "admin",
+        type: String
+    },
 });
 
 // create Admin User Model In Database
