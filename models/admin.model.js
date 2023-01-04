@@ -27,36 +27,36 @@ const bcrypt = require("bcryptjs");
 
 // define create new admin user account function
 
-function create_admin_user_account(userInfo) {
-    return new Promise((resolve, reject) => {
-        mongoose.connect(DB_URL)
-        .then(() => {
-            return admin_user_model.findOne({ email: userInfo.email });
-        })
-        .then((user) => {
-            if (user) {
-                mongoose.disconnect();
-                reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
-            } else {
-                let password = userInfo.password;
-                return bcrypt.hash(password, 10);
-            }
-        })
-        .then(encrypted_password => {
-            userInfo.password = encrypted_password;
-            let new_admin_user = new admin_user_model(userInfo);
-            return new_admin_user.save();
-        })
-        .then(() => {
-            mongoose.disconnect();
-            resolve();
-        })
-        .catch(err => {
-            mongoose.disconnect();
-            reject(err);
-        });
-    });
-}
+// function create_admin_user_account(userInfo) {
+//     return new Promise((resolve, reject) => {
+//         mongoose.connect(DB_URL)
+//         .then(() => {
+//             return admin_user_model.findOne({ email: userInfo.email });
+//         })
+//         .then((user) => {
+//             if (user) {
+//                 mongoose.disconnect();
+//                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+//             } else {
+//                 let password = userInfo.password;
+//                 return bcrypt.hash(password, 10);
+//             }
+//         })
+//         .then(encrypted_password => {
+//             userInfo.password = encrypted_password;
+//             let new_admin_user = new admin_user_model(userInfo);
+//             return new_admin_user.save();
+//         })
+//         .then(() => {
+//             mongoose.disconnect();
+//             resolve();
+//         })
+//         .catch(err => {
+//             mongoose.disconnect();
+//             reject(err);
+//         });
+//     });
+// }
 
 // define admin login function
 
@@ -98,6 +98,6 @@ function admin_login(email, password) {
 }
 
 module.exports = {
-    create_admin_user_account,
+    // create_admin_user_account,
     admin_login
 }
