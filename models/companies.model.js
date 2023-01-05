@@ -65,6 +65,16 @@ function create_company_user_account(userInfo) {
                 mongoose.disconnect();
                 reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
+                // البحث حسب رقم سجل  الشركة
+                return mongoose.models.companie.findOne({ company_record_number: user.company_record_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                // إذا كان هنالك شركة تحمل نفس رقم السجل ، أعد رسالة خطأ
+                mongoose.disconnect();
+                reject("عذراً ، توجد شركة تحمل نفس رقم السجل ، الرجاء إدخال رقم سجل آخر ...")
+            } else {
                 return mongoose.models.companie.findOne({ email: userInfo.email });
             }
         })
