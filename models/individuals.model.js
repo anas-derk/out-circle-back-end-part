@@ -53,12 +53,20 @@ function create_individual_user_account(userInfo) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
-            return individual_user_model.findOne({ email: userInfo.email });
+            return mongoose.models.individual.findOne({ email: userInfo.email });
         })
         .then((user) => {
             if (user) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                return mongoose.models.individual.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
                 return mongoose.models.companie.findOne({ email: userInfo.email });
             }
@@ -68,6 +76,14 @@ function create_individual_user_account(userInfo) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
             } else {
+                return mongoose.models.companie.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
+            } else {
                 return mongoose.models.craftsman.findOne({ email: userInfo.email });
             }
         })
@@ -75,6 +91,14 @@ function create_individual_user_account(userInfo) {
             if (user) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                return mongoose.models.craftsman.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
                 return mongoose.models.institute.findOne({ email: userInfo.email });
             }
@@ -84,6 +108,14 @@ function create_individual_user_account(userInfo) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
             } else {
+                return mongoose.models.institute.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
+            } else {
                 return mongoose.models.scientific_career.findOne({ email: userInfo.email });
             }
         })
@@ -91,6 +123,14 @@ function create_individual_user_account(userInfo) {
             if (user) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                return mongoose.models.scientific_career.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
                 return mongoose.models.partner.findOne({ email: userInfo.email });
             }
@@ -100,7 +140,24 @@ function create_individual_user_account(userInfo) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
             } else {
+                return mongoose.models.partner.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
+            } else {
+                return mongoose.models.admin.findOne({ email: userInfo.email });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
                 let password = userInfo.password;
+                console.log(userInfo.phone_number)
                 return bcrypt.hash(password, 10);
             }
         })

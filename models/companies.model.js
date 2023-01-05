@@ -50,33 +50,36 @@ function create_company_user_account(userInfo) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
         .then(() => {
-            // التأكد من أنّ الحساب موجود أم لا في جدول الشركات
-            return company_user_model.findOne({ email: userInfo.email });
+            return mongoose.models.individual.findOne({ email: userInfo.email });
         })
         .then((user) => {
             if (user) {
-                // إذا كان الحساب موجود مسبقاً فإننا نقوم بإرجاع رسالة خطأ
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
             } else {
-                // في حالة الحساب غير موجود حسب البريد الالكتروني نبحث عنه من خلال رقم السجل الخاص بالشركة
-                return company_user_model.findOne({ company_record_number: userInfo.company_record_number });
+                return mongoose.models.individual.findOne({ phone_number: userInfo.phone_number });
             }
         })
         .then((user) => {
             if (user) {
-                // في حالة الحساب موجود مسبقاً بناءً على رقم السجل نُرجع خطأ
                 mongoose.disconnect();
-                reject("عذراً ، توجد شركة تحمل نفس رقم السجل ، الرجاء إدخال رقم سجل آخر ...");
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
-                // إذا لم يكن الحساب موجوداً في جدول بيانات الشركات في قاعدة البيانات حسب الإيميل أو رقم السجل فإننا نبحث في باقي الجداول حسب الإيميل
-                return mongoose.models.individual.findOne({ email: userInfo.email });
+                return mongoose.models.companie.findOne({ email: userInfo.email });
             }
         })
         .then((user) => {
             if (user) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                return mongoose.models.companie.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
                 return mongoose.models.craftsman.findOne({ email: userInfo.email });
             }
@@ -86,6 +89,14 @@ function create_company_user_account(userInfo) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
             } else {
+                return mongoose.models.craftsman.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
+            } else {
                 return mongoose.models.institute.findOne({ email: userInfo.email });
             }
         })
@@ -93,6 +104,14 @@ function create_company_user_account(userInfo) {
             if (user) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                return mongoose.models.institute.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
                 return mongoose.models.scientific_career.findOne({ email: userInfo.email });
             }
@@ -102,7 +121,31 @@ function create_company_user_account(userInfo) {
                 mongoose.disconnect();
                 reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
             } else {
+                return mongoose.models.scientific_career.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
+            } else {
                 return mongoose.models.partner.findOne({ email: userInfo.email });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً البريد الالكتروني الذي أدخلته موجود مسبقاً ،  من فضلك أدخل بريد الكتروني آخر ...")
+            } else {
+                return mongoose.models.partner.findOne({ phone_number: userInfo.phone_number });
+            }
+        })
+        .then((user) => {
+            if (user) {
+                mongoose.disconnect();
+                reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
+            } else {
+                return mongoose.models.admin.findOne({ email: userInfo.email });
             }
         })
         .then((user) => {
