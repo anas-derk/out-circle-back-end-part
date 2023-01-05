@@ -16,10 +16,28 @@ function post_partners(req, res) {
     }).catch(err => res.json(err));
 }
 
+function post_new_partners(req, res) {
+    const partners_info = req.body.partners_info.map((partner_info) => {
+        partner_info = {...partner_info, company_id: req.query.company_id};
+        return partner_info;
+    });
+    partners_obj.add_new_partners_info(partners_info, req.query.company_id, req.query.number_of_new_partners).then(() => {
+        res.json({});
+    }).catch(err => res.json(err));
+}
+
 function get_partners_info(req, res) {
     partners_obj.get_partners_info(req.query.company_id).then(partners_info => {
         res.json(partners_info);
     }).catch(err => res.json(err));
+}
+
+function delete_partner(req, res) {
+    partners_obj.delete_partner(req.params.partner_id, req.query.company_id)
+    .then(() => {
+        res.json({});
+    })
+    .catch(err => res.json(err));
 }
 
 function put_partner_info(req, res) {
@@ -32,5 +50,7 @@ module.exports = {
     is_partner_user_account_exist,
     post_partners,
     get_partners_info,
-    put_partner_info
+    put_partner_info,
+    delete_partner,
+    post_new_partners
 };

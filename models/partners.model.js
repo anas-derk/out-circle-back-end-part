@@ -107,6 +107,29 @@ function insert_partners_info(users_info) {
     });
 }
 
+function add_new_partners_info(users_info, company_id, number_of_new_partners) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return partner_user_model.insertMany(users_info);
+        })
+        .then(() => {
+            return mongoose.models.companie.findById({_id: company_id})
+        })
+        .then((companyInfo) => {
+            return mongoose.models.companie.updateOne({ _id: company_id }, { number_of_partners: Number(companyInfo.number_of_partners) + Number(number_of_new_partners) })
+        })
+        .then(() => {
+            mongoose.disconnect();
+            resolve();
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        });
+    });
+}
+
 function get_partners_info(company_id) {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL)
@@ -121,6 +144,29 @@ function get_partners_info(company_id) {
             mongoose.disconnect();
             reject(err);
         });
+    });
+}
+
+function delete_partner(partner_id, company_id) {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL)
+        .then(() => {
+            return partner_user_model.deleteOne({ _id: partner_id });
+        })
+        .then(() => {
+            return mongoose.models.companie.findById({_id: company_id})
+        })
+        .then((companyInfo) => {
+            return mongoose.models.companie.updateOne({ _id: company_id }, { number_of_partners: Number(companyInfo.number_of_partners) - 1 })
+        })
+        .then(() => {
+            mongoose.disconnect();
+            resolve();
+        })
+        .catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
     });
 }
 
@@ -155,5 +201,7 @@ module.exports = {
     is_partner_user_account_exist,
     insert_partners_info,
     get_partners_info,
-    update_partner_info
+    update_partner_info,
+    delete_partner,
+    add_new_partners_info
 };
