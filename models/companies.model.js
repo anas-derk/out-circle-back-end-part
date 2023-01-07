@@ -66,7 +66,7 @@ function create_company_user_account(userInfo) {
                 reject("عذراً رقم الموبايل الذي أدخلته موجود مسبقاً ،  من فضلك أدخل رقم موبايل آخر ...")
             } else {
                 // البحث حسب رقم سجل  الشركة
-                return mongoose.models.companie.findOne({ company_record_number: user.company_record_number });
+                return mongoose.models.companie.findOne({ company_record_number: userInfo.company_record_number });
             }
         })
         .then((user) => {
