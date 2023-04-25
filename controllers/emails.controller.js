@@ -12,8 +12,6 @@ function transporter_obj() {
   return transporter;
 }
 
-const { unlinkSync } = require("fs");
-
 const { handle_delete_user_files } = require("../global/functions");
 
 function sendEmail(req, res) {
@@ -57,7 +55,7 @@ function sendEmail(req, res) {
       else {
         // حذف الملفات المرفقة مع الإيميل من المخدم في حالة نجاح الإرسال
         handle_delete_user_files(files);
-        res.json({})
+        res.json({});
       };
     });
 }

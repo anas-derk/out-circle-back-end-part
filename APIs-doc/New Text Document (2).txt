@@ -1,0 +1,9 @@
+Change Password:
+================================================================================
+POST-> /api/users/update-user-password/${user_id}?old_password=value&new_password=value&user_type=value
+Returned Values:
+1- "عذراً الحساب غير موجود ..." if user is not exist
+2- "Error !!!" if user_type not valid
+3- "كلمة السر التي أدخلتها غير صحيحة ، من فضلك أعد إدخال كلمة السر القديمة بشكل صحيح .." if password incorrect
+4- empty object ({}) if If no problems ( user_type is valid & password is correct and user is exist )
+---------------------------
